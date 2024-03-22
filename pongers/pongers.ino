@@ -1,8 +1,8 @@
 #include "Config.hpp"
 #include "BallSensor.hpp"
 
-BallSensor sensor1 = BallSensor(34.5, 3, 4);
-BallSensor sensor2 = BallSensor(26, 8, 9);
+BallSensor sensor1 = BallSensor::Create(34.5, 3, 4);
+BallSensor sensor2 = BallSensor::Create(26, 8, 9);
 
 void setup() {
     Serial.begin(9600);

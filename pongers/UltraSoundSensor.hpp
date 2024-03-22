@@ -1,16 +1,21 @@
 #pragma once
 
+#include "typedefines.hpp"
+
 
 class UltraSoundSensor
 {
-public:
-  UltraSoundSensor(int triggerPin, int echoPin);
-  UltraSoundSensor() = default;
-
-  float GetDistanceCM() const;
-  float GetMaxDistanceCM();
-
 private:
-  int _triggerPin;
-  int _echoPin;
+    pin_t _triggerPin;
+    pin_t _echoPin;
+    UltraSoundSensor(pin_t triggerPin, pin_t echoPin);
+
+public:
+    UltraSoundSensor() = default;
+
+    static UltraSoundSensor Create(pin_t triggerPin, pin_t echoPin);
+
+    float GetDistanceCM() const;
+    float GetMaxDistanceCM() const;
+
 };
