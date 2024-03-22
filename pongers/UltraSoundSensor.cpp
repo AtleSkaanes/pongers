@@ -1,3 +1,5 @@
+#include <arduino.h>
+
 #include "UltraSoundSensor.hpp"
 
 UltraSoundSensor::UltraSoundSensor(int triggerPin, int echoPin)
