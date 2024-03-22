@@ -1,11 +1,10 @@
 #pragma once
 
-struct Config
+namespace Config
 {
-public:
-  static const float ballDiameterCM;
-  static const float maxSensorDistanceCM;
+    constexpr float ballDiameterCM = 3.95f;
+    constexpr float maxSensorDistanceCM = 38.0f;
 
-  static const float frameHeightCM;
-  static const float frameWidthCM;
-};
+    constexpr float frameHeightCM = 40.0f;
+    constexpr float frameWidthCM = 60.0f;
+}; // Config
