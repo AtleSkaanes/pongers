@@ -4,7 +4,8 @@
 BallSensor sensor1 = BallSensor::Create(34.5, 3, 4);
 BallSensor sensor2 = BallSensor::Create(26, 8, 9);
 
-void setup() {
+void setup()
+{
     Serial.begin(9600);
     Serial.println("\nSTARTING UP!");
 
@@ -20,7 +21,8 @@ void setup() {
     Serial.println("\n");
 }
 
-void loop() {
+void loop()
+{
 
     if (sensor1.HasDetected() && sensor2.HasDetected())
         return;
@@ -30,14 +32,17 @@ void loop() {
     // Serial.print("\tSECOND: ");
     // Serial.println(sensor2.MeasureDistanceCM());
 
-    if (!sensor1.HasDetected()) {
+    if (!sensor1.HasDetected())
+    {
         sensor1.MeasureDistanceCM();
     }
-    if (!sensor2.HasDetected()) {
+    if (!sensor2.HasDetected())
+    {
         sensor2.MeasureDistanceCM();
     }
 
-    if (!sensor1.HasDetected()) {
+    if (!sensor1.HasDetected())
+    {
         sensor2.Reset();
         return;
     }
@@ -60,8 +65,6 @@ void loop() {
     //     Serial.println(sensor2.GetMeasuredDistanceCM());
     // }
 
-
-
     Serial.println("BALL MEASUREMENTS:");
     Serial.print("FIRST: ");
     Serial.println(sensor1.GetMeasuredDistanceCM());
@@ -73,7 +76,8 @@ void loop() {
     Serial.println(endPoint);
 }
 
-float PredictEndPointCM(BallSensor sensor1, BallSensor sensor2) {
+float PredictEndPointCM(BallSensor sensor1, BallSensor sensor2)
+{
     const float deltaHeigt = sensor2.GetMeasuredDistanceCM() - sensor1.GetMeasuredDistanceCM();
     const float deltaWidth = abs(sensor1.GetXPositionCM() - sensor2.GetXPositionCM());
 
@@ -95,21 +99,25 @@ float PredictEndPointCM(BallSensor sensor1, BallSensor sensor2) {
     int currentHeight = Config::frameHeightCM;
 
     // Calculate the correct value for "Times"
-    while (currentBallY > currentHeight || currentBallY < -currentHeight + Config::frameHeightCM) {
+    while (currentBallY > currentHeight || currentBallY < -currentHeight + Config::frameHeightCM)
+    {
         currentBallY = rawYvalue + (Config::ballDiameterCM / 2 * (times + 1) * sign);
         currentHeight = Config::frameHeightCM * (times + 1);
         times++;
     }
     times--;
-    
+
     // Get the new y-value.
     const float modifiedYvalue = rawYvalue + Config::ballDiameterCM * times * sign;
 
     // Calculate where the ball ends, when bouncing is included.
     float endValue;
-    if (times % 2 == 0) {
+    if (times % 2 == 0)
+    {
         endValue = fmod(fmod(modifiedYvalue, Config::frameHeightCM) + Config::frameHeightCM, Config::frameHeightCM);
-    } else {
+    }
+    else
+    {
         endValue = Config::frameHeightCM - fmod((fmod(modifiedYvalue, Config::frameHeightCM) + Config::frameHeightCM), Config::frameHeightCM);
     }
 

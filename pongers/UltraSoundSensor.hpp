@@ -2,7 +2,6 @@
 
 #include "typedefines.hpp"
 
-
 class UltraSoundSensor
 {
 private:
@@ -16,6 +15,4 @@ public:
     static UltraSoundSensor Create(pin_t triggerPin, pin_t echoPin);
 
     float GetDistanceCM() const;
-    float GetMaxDistanceCM() const;
-
 };
