@@ -9,8 +9,8 @@
 
 AIStepper::AIStepper(pin_t stepPin, pin_t directionPin, step_t stepsPrRound, step_t currentStep, step_t targetStep, step_t heightStepCount, uint8_t rpm)
     : _stepPin{stepPin}, _directionPin{directionPin}, _stepsPrRound{stepsPrRound}, _currentStep{currentStep}, _targetStep{targetStep}, _heightStepCount{heightStepCount}, _rpm{rpm}
-    {}
-
+{
+}
 
 AIStepper AIStepper::Create(pin_t stepPin, pin_t DirectionPin, step_t stepsPrRound)
 {
@@ -35,7 +35,7 @@ void AIStepper::Calibrate(pin_t firstStepButton, pin_t lastStepButton)
         digitalWrite(_stepPin, LOW);
         delay(10);
     }
-    
+
     digitalWrite(_directionPin, HIGH);
     step_t numSteps = 0;
     while (!digitalRead(lastStepButton))
@@ -53,7 +53,7 @@ void AIStepper::Calibrate(pin_t firstStepButton, pin_t lastStepButton)
 
 void AIStepper::Move(float position, uint8_t rpm)
 {
-    const float stepPosRatio = _heightStepCount/Config::frameHeightCM;
+    const float stepPosRatio = _heightStepCount / Config::frameHeightCM;
 
     _targetStep = static_cast<step_t>(stepPosRatio * position);
     _rpm = rpm;

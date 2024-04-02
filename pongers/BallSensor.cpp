@@ -5,7 +5,7 @@
 
 BallSensor::BallSensor(float xPosition, pin_t triggerPin, pin_t echoPin)
     : _xPosition{xPosition}, _hasDetected{false}, _measuredDistance{0.0},
-    _maxDistanceCM{Config::maxSensorDistanceCM}, _ultraSoundSensor{UltraSoundSensor::Create(triggerPin, echoPin)} {}
+      _maxDistanceCM{Config::maxSensorDistanceCM}, _ultraSoundSensor{UltraSoundSensor::Create(triggerPin, echoPin)} {}
 
 BallSensor BallSensor::Create(float xPosition, pin_t triggerPin, pin_t echoPin)
 {
@@ -54,7 +54,6 @@ float BallSensor::GetMeasuredDistanceCM() const
 {
     return _measuredDistance;
 }
-
 
 float BallSensor::GetXPositionCM() const
 {

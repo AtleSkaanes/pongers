@@ -3,7 +3,8 @@
 #include "UltraSoundSensor.hpp"
 #include "typedefines.hpp"
 
-class BallSensor {
+class BallSensor
+{
 private:
     float _xPosition;
     bool _hasDetected;
@@ -27,7 +28,6 @@ public:
     float GetMeasuredDistanceCM() const;
     float GetXPositionCM() const;
     float GetMaxDistanceCM() const;
-
 
     operator bool();
 };

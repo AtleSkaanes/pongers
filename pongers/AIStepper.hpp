@@ -6,7 +6,6 @@
 #include "Config.hpp"
 #include "typedefines.hpp"
 
-
 class AIStepper
 {
 private:
