@@ -1,7 +1,7 @@
 #line 1 "C:\\Users\\atles\\Documents\\Dev\\Skole\\Elektronik\\Pongers\\pongers\\BallSensor.hpp"
 #pragma once
 
-#include "UltraSoundSensor.hpp"
+#include "LaserSensor.hpp"
 #include "typedefines.hpp"
 
 class BallSensor
@@ -11,14 +11,14 @@ private:
     bool _hasDetected;
     float _measuredDistance;
     float _maxDistanceCM;
-    UltraSoundSensor _ultraSoundSensor;
+    LaserSensor _sensor;
 
-    BallSensor(float xPosition, pin_t triggerPin, pin_t echoPin);
+    BallSensor(float xPosition, LaserSensor sensor);
 
 public:
     BallSensor() = default;
 
-    static BallSensor Create(float xPosition, pin_t triggerPin, pin_t echoPin);
+    static BallSensor Create(float xPosition, LaserSensor sensor);
 
     float MeasureDistanceCM();
     float CalibrateMaxDistance();

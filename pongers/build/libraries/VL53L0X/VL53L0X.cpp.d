@@ -1,10 +1,6 @@
-C:\Users\atles\Documents\Dev\Skole\Elektronik\Pongers\pongers\build\libraries\Adafruit_VL53L0X\platform\src\vl53l0x_platform.cpp.o: \
- C:\Users\atles\Documents\Arduino\libraries\Adafruit_VL53L0X\src\platform\src\vl53l0x_platform.cpp \
- c:\users\atles\documents\arduino\libraries\adafruit_vl53l0x\src\vl53l0x_platform.h \
- c:\users\atles\documents\arduino\libraries\adafruit_vl53l0x\src\vl53l0x_def.h \
- c:\users\atles\documents\arduino\libraries\adafruit_vl53l0x\src\vl53l0x_device.h \
- c:\users\atles\documents\arduino\libraries\adafruit_vl53l0x\src\vl53l0x_types.h \
- c:\users\atles\documents\arduino\libraries\adafruit_vl53l0x\src\vl53l0x_i2c_platform.h \
+C:\Users\atles\Documents\Dev\Skole\Elektronik\Pongers\pongers\build\libraries\VL53L0X\VL53L0X.cpp.o: \
+ C:\Users\atles\Documents\Arduino\libraries\VL53L0X\VL53L0X.cpp \
+ C:\Users\atles\Documents\Arduino\libraries\VL53L0X\VL53L0X.h \
  C:\Users\atles\AppData\Local\Arduino15\packages\arduino\hardware\avr\1.8.6\cores\arduino/Arduino.h \
  C:\Users\atles\AppData\Local\Arduino15\packages\arduino\hardware\avr\1.8.6\cores\arduino/binary.h \
  C:\Users\atles\AppData\Local\Arduino15\packages\arduino\hardware\avr\1.8.6\cores\arduino/WCharacter.h \
@@ -17,9 +13,4 @@ C:\Users\atles\Documents\Dev\Skole\Elektronik\Pongers\pongers\build\libraries\Ad
  C:\Users\atles\AppData\Local\Arduino15\packages\arduino\hardware\avr\1.8.6\cores\arduino/Arduino.h \
  C:\Users\atles\AppData\Local\Arduino15\packages\arduino\hardware\avr\1.8.6\variants\standard/pins_arduino.h \
  C:\Users\atles\AppData\Local\Arduino15\packages\arduino\hardware\avr\1.8.6\libraries\Wire\src/Wire.h \
- C:\Users\atles\AppData\Local\Arduino15\packages\arduino\hardware\avr\1.8.6\cores\arduino/Stream.h \
- c:\users\atles\documents\arduino\libraries\adafruit_vl53l0x\src\vl53l0x_platform_log.h \
- c:\users\atles\documents\arduino\libraries\adafruit_vl53l0x\src\vl53l0x_api.h \
- c:\users\atles\documents\arduino\libraries\adafruit_vl53l0x\src\vl53l0x_api_strings.h \
- c:\users\atles\documents\arduino\libraries\adafruit_vl53l0x\src\vl53l0x_platform.h \
- c:\users\atles\documents\arduino\libraries\adafruit_vl53l0x\src\vl53l0x_i2c_platform.h
+ C:\Users\atles\AppData\Local\Arduino15\packages\arduino\hardware\avr\1.8.6\cores\arduino/Stream.h

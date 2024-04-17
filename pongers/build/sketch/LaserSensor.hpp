@@ -4,16 +4,23 @@
 #include <VL53L0X.h>
 #include "typedefines.hpp"
 
+enum SensorMode
+{
+    Default,
+    HighSpeed,
+    HighAccuracy
+};
+
 class LaserSensor
 {
 private:
-    Adafruit_VL53L0X sensor;
+    VL53L0X sensor;
     static uint8_t numSensors;
 
-    LaserSensor(Adafruit_VL53L0X sensor);
+    LaserSensor(VL53L0X sensor);
 
 public:
-    static LaserSensor Create(pin_t shutDownPin);
+    static LaserSensor Create(pin_t shutDownPin, SensorMode mode = SensorMode::Default);
 
     float GetDistanceCM();
 
@@ -21,7 +28,7 @@ public:
 };
 
 template <uint8_t size>
-void CreateSensors(pin_t shutDownPins[size], LaserSensor *out[size])
+void CreateSensors(pin_t shutDownPins[size], LaserSensor *out[size], SensorMode mode = SensorMode::Default)
 {
     for (uint8_t i = 0; i < size; i++)
     {
@@ -47,6 +54,6 @@ void CreateSensors(pin_t shutDownPins[size], LaserSensor *out[size])
 
     for (uint8_t i = 0; i < size; i++)
     {
-        out[i] = &LaserSensor::Create(shutDownPins[i]);
+        out[i] = &LaserSensor::Create(shutDownPins[i], mode);
     }
 }

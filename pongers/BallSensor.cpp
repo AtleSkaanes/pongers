@@ -3,18 +3,18 @@
 #include "BallSensor.hpp"
 #include "Config.hpp"
 
-BallSensor::BallSensor(float xPosition, pin_t triggerPin, pin_t echoPin)
+BallSensor::BallSensor(float xPosition, LaserSensor sensor)
     : _xPosition{xPosition}, _hasDetected{false}, _measuredDistance{0.0},
-      _maxDistanceCM{Config::maxSensorDistanceCM}, _ultraSoundSensor{UltraSoundSensor::Create(triggerPin, echoPin)} {}
+      _maxDistanceCM{Config::maxSensorDistanceCM}, _sensor{sensor} {}
 
-BallSensor BallSensor::Create(float xPosition, pin_t triggerPin, pin_t echoPin)
+BallSensor BallSensor::Create(float xPosition, LaserSensor sensor)
 {
-    return BallSensor(xPosition, triggerPin, echoPin);
+    return BallSensor(xPosition, sensor);
 }
 
 float BallSensor::MeasureDistanceCM()
 {
-    float dist = _ultraSoundSensor.GetDistanceCM();
+    float dist = _sensor.GetDistanceCM();
 
     if (dist != 0.0 && dist < _maxDistanceCM)
     {
@@ -27,7 +27,7 @@ float BallSensor::MeasureDistanceCM()
 
 float BallSensor::CalibrateMaxDistance()
 {
-    float dist = _ultraSoundSensor.GetDistanceCM();
+    float dist = _sensor.GetDistanceCM();
 
     _maxDistanceCM = dist - 1;
 

@@ -3,6 +3,13 @@
 #include <VL53L0X.h>
 #include "typedefines.hpp"
 
+enum SensorMode
+{
+    Default,
+    HighSpeed,
+    HighAccuracy
+};
+
 class LaserSensor
 {
 private:
@@ -46,13 +53,6 @@ void CreateSensors(pin_t shutDownPins[size], LaserSensor *out[size], SensorMode 
 
     for (uint8_t i = 0; i < size; i++)
     {
-        out[i] = &LaserSensor::Create(shutDownPins[i]);
+        out[i] = &LaserSensor::Create(shutDownPins[i], mode);
     }
 }
-
-enum SensorMode
-{
-    Default,
-    HighSpeed,
-    HighAccuracy
-};
