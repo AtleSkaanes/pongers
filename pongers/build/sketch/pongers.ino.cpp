@@ -1,12 +1,20 @@
+#include <Arduino.h>
+#line 1 "C:\\Users\\atles\\Documents\\Dev\\Skole\\Elektronik\\Pongers\\pongers\\pongers.ino"
 #include "Config.hpp"
 // #include "BallSensor.hpp"
 #include "LaserSensor.hpp"
+#include <VL53L0X.h>
 
 // BallSensor sensor1 = BallSensor::Create(34.5, 8, 9);
 // BallSensor sensor2 = BallSensor::Create(26.5, 3, 4);
 
 LaserSensor *sensors[2];
 
+#line 11 "C:\\Users\\atles\\Documents\\Dev\\Skole\\Elektronik\\Pongers\\pongers\\pongers.ino"
+void setup();
+#line 38 "C:\\Users\\atles\\Documents\\Dev\\Skole\\Elektronik\\Pongers\\pongers\\pongers.ino"
+void loop();
+#line 11 "C:\\Users\\atles\\Documents\\Dev\\Skole\\Elektronik\\Pongers\\pongers\\pongers.ino"
 void setup()
 {
     Serial.begin(9600);
@@ -136,3 +144,4 @@ void loop()
 
 //     return endValue;
 // }
+

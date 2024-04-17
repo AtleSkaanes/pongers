@@ -1,3 +1,4 @@
+#line 1 "C:\\Users\\atles\\Documents\\Dev\\Skole\\Elektronik\\Pongers\\pongers\\Config.hpp"
 #pragma once
 
 namespace Config

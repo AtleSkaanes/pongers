@@ -1,6 +1,8 @@
-#include "Config.hpp"
+# 1 "C:\\Users\\atles\\Documents\\Dev\\Skole\\Elektronik\\Pongers\\pongers\\pongers.ino"
+# 2 "C:\\Users\\atles\\Documents\\Dev\\Skole\\Elektronik\\Pongers\\pongers\\pongers.ino" 2
 // #include "BallSensor.hpp"
-#include "LaserSensor.hpp"
+# 4 "C:\\Users\\atles\\Documents\\Dev\\Skole\\Elektronik\\Pongers\\pongers\\pongers.ino" 2
+
 
 // BallSensor sensor1 = BallSensor::Create(34.5, 8, 9);
 // BallSensor sensor2 = BallSensor::Create(26.5, 3, 4);
