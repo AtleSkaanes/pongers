@@ -14,12 +14,14 @@ class LaserSensor
 {
 private:
     VL53L0X sensor;
+
     static uint8_t numSensors;
 
     LaserSensor(VL53L0X sensor);
 
 public:
     static LaserSensor Create(pin_t shutDownPin, SensorMode mode = SensorMode::Default);
+    static LaserSensor *CreateHeap(pin_t shutDownPin, SensorMode mode = SensorMode::Default);
 
     float GetDistanceCM();
 
@@ -35,15 +37,6 @@ void CreateSensors(pin_t shutDownPins[size], LaserSensor *out[size], SensorMode 
         digitalWrite(shutDownPins[i], LOW);
     }
 
-    delay(10);
-
-    for (uint8_t i = 0; i < size; i++)
-    {
-        digitalWrite(shutDownPins[i], HIGH);
-    }
-
-    delay(10);
-
     for (uint8_t i = 0; i < size; i++)
     {
         digitalWrite(shutDownPins[i], LOW);
@@ -53,6 +46,20 @@ void CreateSensors(pin_t shutDownPins[size], LaserSensor *out[size], SensorMode 
 
     for (uint8_t i = 0; i < size; i++)
     {
-        out[i] = &LaserSensor::Create(shutDownPins[i], mode);
+        digitalWrite(shutDownPins[i], HIGH);
+    }
+
+    delay(10);
+
+    for (uint8_t i = 1; i < size; i++)
+    {
+        digitalWrite(shutDownPins[i], LOW);
+    }
+
+    for (uint8_t i = 0; i < size; i++)
+    {
+        digitalWrite(shutDownPins[i], HIGH);
+        delay(10);
+        out[i] = LaserSensor::CreateHeap(shutDownPins[i], mode);
     }
 }

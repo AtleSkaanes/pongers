@@ -25,5 +25,7 @@ public:
     void Move(float position, uint8_t rpm);
     void UpdatePos();
 
+    void operator=(const AIStepper &) = default;
+
     AIStepper() = default;
 };

@@ -1,47 +1,106 @@
 #include "Config.hpp"
 #include "BallSensor.hpp"
 #include "LaserSensor.hpp"
+#include "AIStepper.hpp"
 
 BallSensor *sensor1 = nullptr;
 BallSensor *sensor2 = nullptr;
 
+AIStepper stepper;
+
 bool ballIsReturning = false;
+
+constexpr pin_t STEP_PIN = 3;
+constexpr pin_t DIR_PIN = 2;
+constexpr pin_t BUTTON_PIN = 5;
 
 void setup()
 {
     Serial.begin(9600);
-    Serial.println("\nSTARTING UP!");
+    Wire.begin();
+    Serial.println(F("\nSTARTING UP!"));
 
-    LaserSensor *sensors[2];
+    LaserSensor *sensors[2] = {nullptr, nullptr};
     pin_t shutDownPins[2] = {8, 9};
 
-    sensor1->Create(10, *sensors[0]);
-    sensor2->Create(20, *sensors[1]);
+    CreateSensors<2>(shutDownPins, sensors, SensorMode::HighSpeed);
 
-    while (sensor1->GetMaxDistanceCM() == -1 || sensor1->GetMaxDistanceCM() == Config::maxSensorDistanceCM)
+    sensor1 = BallSensor::CreateHeap(34.5, *sensors[0]);
+    sensor2 = BallSensor::CreateHeap(25.5, *sensors[1]);
+
+    Serial.println(F("[STATUS]: CALIBRATING SENSORS"));
+
+    // Wait until the max distance is a valid number
+
+    while (sensor1->GetMaxDistanceCM() <= 1.0f || sensor1->GetMaxDistanceCM() == Config::maxSensorDistanceCM || sensor1->GetMaxDistanceCM() != sensor1->GetMaxDistanceCM())
     {
         sensor1->CalibrateMaxDistance();
     }
-    while (sensor2->GetMaxDistanceCM() == -1 || sensor2->GetMaxDistanceCM() == Config::maxSensorDistanceCM)
+    while (sensor2->GetMaxDistanceCM() <= 1.0f || sensor2->GetMaxDistanceCM() == Config::maxSensorDistanceCM || sensor1->GetMaxDistanceCM() != sensor1->GetMaxDistanceCM())
     {
         sensor2->CalibrateMaxDistance();
     }
 
-    Serial.println("MAX DISTANCE:");
-    Serial.print("SENSOR 1: ");
-    Serial.println(sensor1->GetMaxDistanceCM());
+    Serial.print(F("[READING]: Max dist 1:\t"));
+    Serial.print(sensor1->GetMaxDistanceCM());
 
-    Serial.print("SENSOR 2: ");
+    Serial.print(F(" cm\t\tMax dist 2:\t"));
     Serial.println(sensor2->GetMaxDistanceCM());
-    Serial.println("\n");
+    Serial.println(F(" cm\n"));
 
-    Serial.println("READY");
+    float minDist = (sensor1->GetMaxDistanceCM() < sensor2->GetMaxDistanceCM()) ? sensor1->GetMaxDistanceCM() : sensor2->GetMaxDistanceCM();
+    sensor1->SetMaxDistanceCM(minDist);
+    sensor2->SetMaxDistanceCM(minDist);
+
+    Config::frameHeightCM = minDist;
+
+    Serial.println(F("\n[STATUS]: CALIBRATING STEPPER MOTOR"));
+
+    stepper = AIStepper::Create(STEP_PIN, DIR_PIN, 200);
+
+    stepper.Calibrate(BUTTON_PIN, BUTTON_PIN);
+
+    Serial.println(F("\n[STATUS]: READY"));
 }
 
 void loop()
 {
+    stepper.UpdatePos();
+    // float dist1 = sensor1->MeasureDistanceCM();
+    // if (dist1 >= sensor1->GetMaxDistanceCM())
+    //     return;
+    // Serial.print("Sensor 1:\t");
+    // Serial.print(dist1);
+    // Serial.println(" cm");
+
+    // return;
+
+    // float dist2 = sensor2->MeasureDistanceCM();
+
+    // if (dist1 < sensor1->GetMaxDistanceCM())
+    // {
+    //     Serial.print("Sensor 1:\t");
+    //     Serial.print(dist1);
+    //     Serial.println(" cm");
+    // }
+
+    // if (dist2 < sensor2->GetMaxDistanceCM())
+    // {
+    //     Serial.print("Sensor 2:\t");
+    //     Serial.print(dist2);
+    //     Serial.println(" cm");
+    // }
+
+    // return;
+
+    if (sensor1->HasDetected() && sensor2->HasDetected())
+    {
+        return;
+    }
+
     if (sensor2->HasDetected() && !sensor1->HasDetected())
     {
+        Serial.println(F("[GAME STATUS]: ball returning"));
         ballIsReturning = true;
     }
 
@@ -49,6 +108,7 @@ void loop()
     {
         sensor1->Reset();
         sensor2->Reset();
+        Serial.println(F("[GAME STATUS]: Ball returned; Resat sensors"));
         ballIsReturning = false;
     }
 
@@ -59,36 +119,69 @@ void loop()
 
     if (!sensor1->HasDetected())
     {
-        sensor1->MeasureDistanceCM();
+        float minDist = sensor1->GetMaxDistanceCM();
+
+        do
+        {
+            sensor1->MeasureDistanceCM();
+            if (sensor1->HasDetected() && sensor1->GetMeasuredDistanceCM() < minDist)
+            {
+                minDist = sensor1->GetMeasuredDistanceCM();
+            }
+
+        } while (sensor1->HasDetected() && sensor1->GetMeasuredDistanceCM() < minDist + 0.5f);
+
         if (!sensor1->HasDetected())
             return;
 
-        Serial.print("FIRST DETECTED: ");
-        Serial.println(sensor1->GetMeasuredDistanceCM());
+        sensor1->SetMeasuredDistanceCM(minDist);
+
+        Serial.print(F("[READING]: FIRST SENSOR DETECTED:\t"));
+        Serial.print(sensor1->GetMeasuredDistanceCM());
+        Serial.println(F(" cm"));
     }
 
     if (!sensor2->HasDetected())
     {
-        sensor2->MeasureDistanceCM();
+        float minDist = sensor2->GetMaxDistanceCM();
+
+        do
+        {
+            sensor2->MeasureDistanceCM();
+            if (sensor2->HasDetected() && sensor2->GetMeasuredDistanceCM() < minDist)
+            {
+                minDist = sensor2->GetMeasuredDistanceCM();
+            }
+
+        } while (sensor2->HasDetected() && sensor2->GetMeasuredDistanceCM() < minDist + 0.5f);
+
         if (!sensor2->HasDetected())
             return;
 
-        Serial.print("SECOND DETECTED: ");
-        Serial.println(sensor2->GetMeasuredDistanceCM());
+        sensor2->SetMeasuredDistanceCM(minDist);
+
+        Serial.print(F("[READING]: SECOND SENSOR DETECTED:\t"));
+        Serial.print(sensor2->GetMeasuredDistanceCM());
+        Serial.println(F(" cm"));
     }
 
-    Serial.println("\nBALL MEASUREMENTS:");
-    Serial.print("FIRST: ");
+    Serial.println(F("\n[GAME STATUS]: ALL SENSORS DETECTED BALL"));
+    Serial.println(F("\nBALL MEASUREMENTS:"));
+    Serial.print(F("FIRST: "));
     Serial.println(sensor1->GetMeasuredDistanceCM());
-    Serial.print("SECOND: ");
+    Serial.print(F("SECOND: "));
     Serial.println(sensor2->GetMeasuredDistanceCM());
 
     float endPoint = PredictEndPointCM(*sensor1, *sensor2);
-    Serial.print("ENDPOINT: ");
+    Serial.print(F("\nENDPOINT: "));
     Serial.println(endPoint);
 
-    sensor1->Reset();
-    sensor2->Reset();
+    stepper.Move(endPoint, 10);
+
+    // delay(200);
+
+    // sensor2->Reset();
+    // sensor1->Reset();
 }
 
 float PredictEndPointCM(BallSensor sensor1, BallSensor sensor2)

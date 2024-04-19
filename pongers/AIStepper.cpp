@@ -53,7 +53,7 @@ void AIStepper::Calibrate(pin_t firstStepButton, pin_t lastStepButton)
 
 void AIStepper::Move(float position, uint8_t rpm)
 {
-    const float stepPosRatio = _heightStepCount / Config::frameHeightCM;
+    static const float stepPosRatio = _heightStepCount / Config::frameHeightCM;
 
     _targetStep = static_cast<step_t>(stepPosRatio * position);
     _rpm = rpm;
@@ -78,9 +78,9 @@ void AIStepper::UpdatePos()
     for (step_t step = 0; step < deltaSteps; step++)
     {
         digitalWrite(_stepPin, HIGH);
-        delayMicroseconds(250);
+        delayMicroseconds(750);
         digitalWrite(_stepPin, LOW);
-        delayMicroseconds(250);
+        delayMicroseconds(750);
     }
 
     _currentStep += direction ? deltaSteps : -deltaSteps;

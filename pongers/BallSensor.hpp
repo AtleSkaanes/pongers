@@ -18,6 +18,7 @@ public:
     BallSensor() = default;
 
     static BallSensor Create(float xPosition, LaserSensor sensor);
+    static BallSensor *CreateHeap(float xPosition, LaserSensor sensor);
 
     float MeasureDistanceCM();
     float CalibrateMaxDistance();
@@ -26,8 +27,11 @@ public:
 
     bool HasDetected() const;
     float GetMeasuredDistanceCM() const;
+    void SetMeasuredDistanceCM(float distanceCM);
     float GetXPositionCM() const;
     float GetMaxDistanceCM() const;
+    void SetMaxDistanceCM(float distanceCM);
+    uint8_t GetLastStatus() const;
 
     operator bool();
 };

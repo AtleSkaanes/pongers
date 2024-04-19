@@ -9,12 +9,11 @@ LaserSensor::LaserSensor(VL53L0X sensor)
 
 LaserSensor LaserSensor::Create(pin_t shutDownPin, SensorMode mode = SensorMode::Default)
 {
-    digitalWrite(shutDownPin, HIGH);
+    VL53L0X sensor;
 
-    VL53L0X sensor = VL53L0X();
-
-    sensor.setAddress(START_ADDRESS + numSensors);
-    if (sensor.getAddress() != START_ADDRESS + numSensors)
+    int newAddress = START_ADDRESS + numSensors;
+    sensor.setAddress(newAddress);
+    if (sensor.getAddress() != newAddress)
     {
         Serial.print("Failed to set address to sensor with XSHUT pin ");
         Serial.println(shutDownPin);
@@ -22,7 +21,7 @@ LaserSensor LaserSensor::Create(pin_t shutDownPin, SensorMode mode = SensorMode:
 
     if (!sensor.init())
     {
-        Serial.println("Failed to start sensor with XSHUT pin ");
+        Serial.print("Failed to start sensor with XSHUT pin ");
         Serial.println(shutDownPin);
     }
     numSensors++;
@@ -33,12 +32,47 @@ LaserSensor LaserSensor::Create(pin_t shutDownPin, SensorMode mode = SensorMode:
     else if (mode == SensorMode::HighAccuracy)
         sensor.setMeasurementTimingBudget(200000);
 
+    sensor.startContinuous();
+
     return LaserSensor{sensor};
+}
+
+LaserSensor *LaserSensor::CreateHeap(pin_t shutDownPin, SensorMode mode = SensorMode::Default)
+{
+    VL53L0X sensor;
+
+    int newAddress = START_ADDRESS + numSensors;
+    sensor.setAddress(newAddress);
+    if (sensor.getAddress() != newAddress)
+    {
+        Serial.print("Failed to set address to sensor with XSHUT pin ");
+        Serial.println(shutDownPin);
+    }
+
+    if (!sensor.init())
+    {
+        Serial.print("Failed to start sensor with XSHUT pin ");
+        Serial.println(shutDownPin);
+    }
+    numSensors++;
+
+    if (mode == SensorMode::HighSpeed)
+        sensor.setMeasurementTimingBudget(20000);
+
+    else if (mode == SensorMode::HighAccuracy)
+        sensor.setMeasurementTimingBudget(200000);
+
+    sensor.startContinuous();
+
+    return new LaserSensor{sensor};
 }
 
 float LaserSensor::GetDistanceCM()
 {
-    return sensor.readRangeSingleMillimeters() / 10.0f;
+
+    uint16_t distMM = sensor.readRangeContinuousMillimeters();
+
+    return static_cast<float>(distMM) / 10.0f - 0.75f;
 }
 
 uint8_t LaserSensor::GetLastStatusCode() const
