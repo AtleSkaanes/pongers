@@ -6,7 +6,7 @@
 BallSensor *sensor1 = nullptr;
 BallSensor *sensor2 = nullptr;
 
-AIStepper stepper;
+AIStepper stepper = AIStepper();
 
 bool ballIsReturning = false;
 
@@ -93,10 +93,10 @@ void loop()
 
     // return;
 
-    if (sensor1->HasDetected() && sensor2->HasDetected())
-    {
-        return;
-    }
+    // if (sensor1->HasDetected() && sensor2->HasDetected())
+    // {
+    //     return;
+    // }
 
     if (sensor2->HasDetected() && !sensor1->HasDetected())
     {
@@ -176,12 +176,12 @@ void loop()
     Serial.print(F("\nENDPOINT: "));
     Serial.println(endPoint);
 
-    stepper.Move(endPoint, 10);
+    stepper.Move(endPoint, 60);
 
-    // delay(200);
+    // delay(500);
 
-    // sensor2->Reset();
-    // sensor1->Reset();
+    sensor2->Reset();
+    sensor1->Reset();
 }
 
 float PredictEndPointCM(BallSensor sensor1, BallSensor sensor2)

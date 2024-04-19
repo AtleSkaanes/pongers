@@ -9,13 +9,15 @@
 class AIStepper
 {
 private:
-    const pin_t _stepPin;
-    const pin_t _directionPin;
-    const step_t _stepsPrRound;
+    pin_t _stepPin;
+    pin_t _directionPin;
+    step_t _stepsPrRound;
     step_t _currentStep;
     step_t _targetStep;
     step_t _heightStepCount;
     uint8_t _rpm;
+
+    bool _isMoving = false;
 
     AIStepper(pin_t stepPin, pin_t directionPin, step_t stepsPrRound, step_t currentStep, step_t targetStep, step_t heightStepCount, uint8_t rpm);
 
@@ -25,7 +27,7 @@ public:
     void Move(float position, uint8_t rpm);
     void UpdatePos();
 
-    void operator=(const AIStepper &) = default;
+    AIStepper &operator=(const AIStepper &) = default;
 
     AIStepper() = default;
 };

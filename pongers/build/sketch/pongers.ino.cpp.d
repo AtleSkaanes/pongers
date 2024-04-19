@@ -17,4 +17,5 @@ C:\Users\atles\Documents\Dev\Skole\Elektronik\Pongers\pongers\build\sketch\ponge
  C:\Users\atles\Documents\Arduino\libraries\VL53L0X/VL53L0X.h \
  C:\Users\atles\AppData\Local\Arduino15\packages\arduino\hardware\avr\1.8.6\libraries\Wire\src/Wire.h \
  C:\Users\atles\AppData\Local\Arduino15\packages\arduino\hardware\avr\1.8.6\cores\arduino/Stream.h \
- C:\Users\atles\Documents\Dev\Skole\Elektronik\Pongers\pongers\build\sketch\typedefines.hpp
+ C:\Users\atles\Documents\Dev\Skole\Elektronik\Pongers\pongers\build\sketch\typedefines.hpp \
+ C:\Users\atles\Documents\Dev\Skole\Elektronik\Pongers\pongers\build\sketch\AIStepper.hpp
